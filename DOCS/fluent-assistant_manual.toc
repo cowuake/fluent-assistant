@@ -1,0 +1,5 @@
+@numchapentry{Motivation}{1}{}{1}
+@numsecentry{First Section}{1.1}{}{1}
+@numchapentry{Using the library}{2}{}{2}
+@numchapentry{Extending the library}{3}{}{3}
+@numchapentry{Contributing}{4}{}{4}
