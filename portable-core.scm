@@ -84,7 +84,6 @@
 
 
 
-
 ;;;;;;;;;;;;;;;
 ;; BASE MATH
 ;;  (REUSABLE)
@@ -137,7 +136,7 @@
 
 (define binet
   (lambda (n)
-    (if (non-negative-integer? n)
+    (when (non-negative-integer? n)
         (let* ((a (sqrt 5))
                (b (/ (+ 1 a) 2))
                (c (/ (- 1 a) 2)))
@@ -146,9 +145,31 @@
              a)))))
 
 
-(define fibonacci-number
+;; This is a non-tail-recursive implementation for finding a Fibonacci number
+(define fibonacci-number-direct
   (lambda (n)
-    (binet n)))
+    (when (non-negative-integer? n)
+	(cond
+	 ((equal? n 1) 0)
+	 ((equal? n 2) 1)
+	 (else (+ (fibonacci-number-direct (- n 1))
+		  (fibonacci-number-direct (- n 2))))))))
+
+
+;; This is a tail-recursive implementation for finding a Fibonacci number
+(define fibonacci-number-tail-recursive
+  (lambda (n)
+    (define aux
+      (lambda (acc1 acc2 current-n)
+	(if (equal? current-n n)
+	    (+ acc1 acc2)
+	    (aux acc2
+		 (+ acc1 acc2)
+		 (add1 current-n)))))
+    (cond
+     ((equal? n 1) 0)
+     ((equal? n 2) 1)
+     (else (aux 0 1 3)))))
 
 
 ;; On a "good" Scheme implementation, this will lead to the correct Fibonacci
@@ -167,7 +188,8 @@
                            (last
                             (list-ref reversed 0))
                            (before-last
-                            (list-ref reversed 1)))(append previous (list (+ last before-last)))))))))
+                            (list-ref reversed 1)))
+		      (append previous (list (+ last before-last)))))))))
 
 
 ;; This exists only for showing that an even slower compund procedure for
@@ -191,13 +213,19 @@
 	(map binet (sequence 0 (sub1 n))))))
 
 
-;; Chosen implementation
+;; Chosen implementation for Fibonacci sequences
 (define fibonacci
   (lambda (n)
     (fibonacci-fast n)))
 
 
-;; ROOT FINDING ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Chosen implementation for Fibonacci numbers
+(define fibonacci-number
+  (lambda (n)
+    (fibonacci-number-tail-recursive n)))
+
+
+;; ROOT FINDING ###############################################################
 
 (define illinois
   (lambda (f x1 x2 . args)
@@ -221,6 +249,7 @@
 		(cons (exact->inexact xc)
 		      (cons n-iter
 			    (cons (exact->inexact fc) '())))))))))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -382,6 +411,7 @@
 			      ""))))))
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; LIST MANIPULATION
 ;;          (REUSABLE)
@@ -438,6 +468,7 @@
                          last)))))
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VECTORS AND ARRAYS
 ;;           (REUSABLE)
@@ -474,6 +505,7 @@
 			  (when (not (null? (cdr args)))
                             (cdr args))))
         array)))
+
 
 
 ;;;;;;;;;;;;;;
@@ -513,6 +545,7 @@
 (define append-to-file
   (lambda (output file-name)
     (to-file output file-name "a")))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

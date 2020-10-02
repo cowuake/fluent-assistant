@@ -5,6 +5,8 @@
 @set VERSION 1.0 alpha
 @set UPDATED 3 September 2020
 
+@documentencoding UTF-8
+
 @copying
 This manual is for fluent.scm (version @value{VERSION}, @value{UPDATED}),
 a library of procedures in Fluent Scheme aimed at allowing some additional
@@ -35,14 +37,97 @@ Texts.  A copy of the license is included in the section entitled
 
 @contents
 
+@node Top
 
+@ifinfo
+@heading fluent-assistant manual
+@end ifinfo
+
+@menu
+* Chapter 1::           Motivation
+* Chapter 2::           Using the library
+* Chapter 3::           Extending the library
+* Chapter 4::           Contributing
+@detailmenu
+Motivation
+* 1.1::                 What many open-source solvers do not offer
+* 1.2::                 Mixing open-source and ...
+Using the library
+* 2.1::                 Requisites
+* 2.2::                 Running the test suite
+* 2.3::                 The GUI extensions
+Extending the library
+* 3.1::                 What is Scheme?
+* 3.2::                 A quick overview of the language
+* 3.3::                 The power of extension
+Contributing
+* 4.1::                 The open-source development model
+* 4.2::                 What licenses imply
+* 4.3::                 Becoming contributors
+@end detailmenu
+@end menu
+
+@node Chapter 1, 1.1, Top, Top
 @chapter Motivation
-@section First Section
 
+@node 1.1, 1.2, Chapter 1, Chapter 1
+@section What many open-source solvers do not offer
+
+@node 1.2, Chapter 2, 1.1, 1.1
+@section Mixing open-source and ...
+
+@node Chapter 2, 2.1, 1.3, Top
 @chapter Using the library
 
+@node 2.1, 2.2, Chapter 2, Chapter 2
+@section 2.1
+
+@node 2.2, 2.3, 2.1, 2.1
+@section 2.2
+
+@node 2.3, Chapter 3, 2.2, 2.2
+@section 2.3
+
+@node Chapter 3, 3.1, 2.3, Top
 @chapter Extending the library
 
+@node 3.1, 3.2, Chapter 3, Chapter 3
+@section 3.1
+
+@node 3.2, 3.3, 3.1, 3.1
+@section 3.2
+
+@node 3.3, Chapter 4, 3.2, 3.2
+@section 3.3
+
+@lisp
+(define fibonacci-number-tail-recursive
+  (lambda (n)
+    (define aux
+      (lambda (acc1 acc2 current-n)
+	(if (equal? current-n n)
+	    (+ acc1 acc2)
+	    (aux acc2
+		 (+ acc1 acc2)
+		 (add1 current-n)))))
+    (cond
+     ((equal? n 1) 0)
+     ((equal? n 2) 1)
+     (else (aux 0 1 3)))))
+@end lisp
+
+
+@node Chapter 4, 4.1, Top, Top
 @chapter Contributing
+
+@node 4.1, 4.2, Chapter 4, Chapter 4
+@section 4.1
+
+@node 4.2, 4.3, 4.1, 4.1
+@section 4.2
+
+@node 4.3
+@section 4.3
+
 
 @bye

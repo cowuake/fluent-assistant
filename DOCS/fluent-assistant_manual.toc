@@ -1,5 +1,15 @@
-@numchapentry{Motivation}{1}{}{1}
-@numsecentry{First Section}{1.1}{}{1}
-@numchapentry{Using the library}{2}{}{2}
-@numchapentry{Extending the library}{3}{}{3}
-@numchapentry{Contributing}{4}{}{4}
+@numchapentry{Motivation}{1}{Chapter 1}{1}
+@numsecentry{What many open-source solvers do not offer}{1.1}{1.1}{1}
+@numsecentry{Mixing open-source and ...}{1.2}{1.2}{1}
+@numchapentry{Using the library}{2}{Chapter 2}{2}
+@numsecentry{2.1}{2.1}{2.1}{2}
+@numsecentry{2.2}{2.2}{2.2}{2}
+@numsecentry{2.3}{2.3}{2.3}{2}
+@numchapentry{Extending the library}{3}{Chapter 3}{3}
+@numsecentry{3.1}{3.1}{3.1}{3}
+@numsecentry{3.2}{3.2}{3.2}{3}
+@numsecentry{3.3}{3.3}{3.3}{3}
+@numchapentry{Contributing}{4}{Chapter 4}{4}
+@numsecentry{4.1}{4.1}{4.1}{4}
+@numsecentry{4.2}{4.2}{4.2}{4}
+@numsecentry{4.3}{4.3}{4.3}{4}

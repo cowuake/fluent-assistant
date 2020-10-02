@@ -1,10 +1,12 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdfetex 2020.10.2)  2 OCT 2020 15:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdfetex 2020.10.2)  2 OCT 2020 20:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
 **\nonstopmode \bgroup\catcode62=2\relax \catcode`\_=12\relax \toks0\bgroup\inp
-ut ./fluent-assistant_manual.texi \relax>\expandafter\egroup\the\toks0\relax
+ut ./fluent-assistant_manual.texi \relax>\expandafter\egroup\the\toks0\relax \b
+group\catcode62=2\relax \catcode`\_=12\relax \toks0\bgroup\input ./fluent-assis
+tant_manual.texi \relax>\expandafter\egroup\the\toks0\relax
 (./fluent-assistant_manual.texi
 (/usr/share/texlive/texmf-dist/tex/texinfo/texinfo.tex
 Loading texinfo [version 2019-09-20.22]:
@@ -162,25 +164,29 @@ ap/pdftex/updmap/pdftex.map}] [2]
 \openout0 = `fluent-assistant_manual.toc'.
 
 
-Chapter 2 [1] Chapter 3 [2] Chapter 4 [3] [4] ) 
+(/home/rmura/fluent-assistant/DOCS/fluent-assistant_manual.aux)
+\openout1 = `fluent-assistant_manual.aux'.
+
+ Chapter 2
+[1] Chapter 3 [2] Chapter 4 [3] [4] ) 
 Here is how much of TeX's memory you used:
- 3168 strings out of 497092
- 32591 string characters out of 6206680
- 65075 words of memory out of 5000000
- 4278 multiletter control sequences out of 15000+600000
+ 3242 strings out of 497092
+ 33361 string characters out of 6206680
+ 68994 words of memory out of 5000000
+ 4334 multiletter control sequences out of 15000+600000
  34203 words of font info for 119 fonts, out of 8000000 for 9000
  51 hyphenation exceptions out of 8191
- 16i,6n,16p,430b,501s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb>
-Output written on fluent-assistant_manual.pdf (7 pages, 60971 bytes).
+ 16i,6n,16p,571b,500s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on fluent-assistant_manual.pdf (7 pages, 76826 bytes).
 PDF statistics:
- 79 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
- 5 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 143 PDF objects out of 1000 (max. 8388607)
+ 123 compressed objects within 2 object streams
+ 20 named destinations out of 1000 (max. 500000)
+ 133 words of extra memory for PDF output out of 10000 (max. 10000000)
 
