@@ -468,6 +468,30 @@
                          last)))))
 
 
+(define filter
+  (lambda (test lst)
+    (if (null? lst)
+        '()
+        (let ((present (car lst)))
+          (append (if (test present)
+                      (list present)
+                      '())
+                  (filter test (cdr lst)))))))
+
+
+(define quick-sort
+  (lambda (unsorted)
+    (if (null? unsorted)
+        '()
+        (let* ((pivot (car unsorted))
+               (rest (cdr unsorted))
+               (head (filter (lambda (x) (< x pivot)) rest))
+               (tail (filter (lambda (x) (>= x pivot)) rest)))
+          (append (quick-sort head)
+                  (list pivot)
+                  (quick-sort tail))))))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VECTORS AND ARRAYS
