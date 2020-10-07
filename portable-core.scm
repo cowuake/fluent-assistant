@@ -479,6 +479,24 @@
                   (filter test (cdr lst)))))))
 
 
+(define reduce
+  (lambda (func lst)
+    (let ((n (length lst)))
+      (define aux
+        (lambda (acc current-n)
+          (if (equal? current-n
+                      (sub1 n))
+              acc
+              (aux (func acc
+                         (list-ref lst (add1 current-n)))
+                   (add1 current-n)))))
+      (cond ((equal? n 0) '())
+            ((equal? n 1) lst)
+            (else (aux (func (car lst)
+                             (cadr lst))
+                       1))))))
+
+
 (define quick-sort
   (lambda (unsorted)
     (if (null? unsorted)
@@ -490,6 +508,11 @@
           (append (quick-sort head)
                   (list pivot)
                   (quick-sort tail))))))
+
+
+(define sort
+  (lambda (unsorted)
+    (quick-sort unsorted)))
 
 
 
