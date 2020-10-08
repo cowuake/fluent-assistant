@@ -89,6 +89,15 @@
 ;;  (REUSABLE)
 ;;;;;;;;;;;;;;;
 
+(define add
+  (lambda (x)
+    (reduce + x)))
+
+(define multiply
+  (lambda (x)
+    (reduce * x)))
+
+
 (define recursive-op
   (lambda (operator neutral f lower upper)
     (if (<= lower upper)
@@ -540,18 +549,24 @@
                          last))))
 
 
-;; Still not working, investigation needed
-(define access-array
-  (lambda (array index . args)
-    (if (vector? array)
-        (if (null? args)
-            (vector-ref array index)
-            (access-array (vector-ref array
-                                      index)
-                          (car args)
-			  (when (not (null? (cdr args)))
-                            (cdr args))))
-        array)))
+(define array-ref
+  (lambda (data index . args)
+    (if (vector? data)
+	(if (null? args)
+            (vector-ref data index)
+            (apply array-ref
+		   (append (list (vector-ref data index))
+                           (cons (car args)
+                                 (cdr args)))))
+        data)))
+
+
+(define shape
+  (lambda (data)
+    (if (not (vector? data))
+        '()
+        (append (list (vector-length data))
+                (shape (vector-ref data 0))))))
 
 
 
