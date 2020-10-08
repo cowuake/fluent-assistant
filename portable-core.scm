@@ -569,6 +569,78 @@
                 (shape (vector-ref data 0))))))
 
 
+(define dimension
+  (lambda (data)
+    (length (shape data))))
+
+
+(define matrix?
+  (lambda (data)
+    (and (vector? data)
+	 (equal? (dimension data)
+		 2))))
+
+
+(define n-rows
+  (lambda (data)
+    (when (matrix? data)
+      (car (shape data)))))
+
+
+(define n-columns
+  (lambda (data)
+    (when (matrix? data)
+      (cadr (shape data)))))
+
+
+(define 1D?
+  (lambda (data)
+    (equal? (dimension data)
+	    1)))
+
+
+(define 2D?
+  (lambda (data)
+    (equal? (dimension data)
+	    2)))
+
+
+(define 3D?
+  (lambda (data)
+    (equal? (dimension data)
+	    3)))
+
+
+(define vector-scalar-product
+  (lambda (vec1 vec2)
+    (define aux
+      (lambda (acc n)
+	(if (< n (vector-length vec1))
+	    (aux (+ acc (* (vector-ref vec1 n)
+			   (vector-ref vec2 n)))
+		 (add1 n))
+	    acc)))
+    (aux (* (vector-ref vec1 0)
+	    (vector-ref vec2 0))
+	 1)))
+
+
+(define scalar-mult
+  (lambda (num data)
+    '()))
+
+
+(define dot
+  (lambda (data1 data2)
+    (cond ((number? data1)
+	   (scalar-mult data1 data2))
+	  ((and (1D? data1)
+	       (1D? data2)
+	       (equal? (vector-length data1)
+		       (vector-length data2)))
+	   (vector-scalar-product data1 data2)))))
+
+
 
 ;;;;;;;;;;;;;;
 ;; BASE I/O
