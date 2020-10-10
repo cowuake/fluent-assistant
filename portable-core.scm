@@ -140,7 +140,7 @@
 (define non-negative-integer?
   (lambda (n)
     (or (positive-integer? n)
-        (equal? n 0))))
+        (= n 0))))
 
 
 (define binet
@@ -159,8 +159,8 @@
   (lambda (n)
     (when (non-negative-integer? n)
 	(cond
-	 ((equal? n 1) 0)
-	 ((equal? n 2) 1)
+	 ((= n 1) 0)
+	 ((= n 2) 1)
 	 (else (+ (fibonacci-number-direct (- n 1))
 		  (fibonacci-number-direct (- n 2))))))))
 
@@ -170,14 +170,14 @@
   (lambda (n)
     (define aux
       (lambda (acc1 acc2 current-n)
-	(if (equal? current-n n)
+	(if (= current-n n)
 	    (+ acc1 acc2)
 	    (aux acc2
 		 (+ acc1 acc2)
 		 (add1 current-n)))))
     (cond
-     ((equal? n 1) 0)
-     ((equal? n 2) 1)
+     ((= n 1) 0)
+     ((= n 2) 1)
      (else (aux 0 1 3)))))
 
 
@@ -188,8 +188,8 @@
 (define fibonacci-slow
   (lambda (n)
     (if (positive-integer? n)
-        (cond ((equal? n 1) '(0))
-              ((equal? n 2) '(0 1))
+        (cond ((= n 1) '(0))
+              ((= n 2) '(0 1))
               (else (let* ((previous
                             (fibonacci-slow (sub1 n)))
                            (reversed
@@ -206,8 +206,8 @@
 (define fibonacci-slower
   (lambda (n)
     (if (positive-integer? n)
-        (cond ((equal? n 1) '(0))
-              ((equal? n 2) '(0 1))
+        (cond ((= n 1) '(0))
+              ((= n 2) '(0 1))
               (else (append (fibonacci-slower (sub1 n))
                             (list (+ (list-ref (reverse (fibonacci-slower (sub1 n))) 0)
                                      (list-ref (reverse (fibonacci-slower (sub1 n))) 1)))))))))
@@ -261,6 +261,22 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; POLY
+;;            (REUSABLE)
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define transpose
+  (lambda (input)
+    (cond
+     ((list? input)
+      (list-transpose input))
+     ((matrix? input)
+      (matrix-transpose input)))))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; STRING MANIPULATION
 ;;            (REUSABLE)
@@ -280,8 +296,8 @@
 (define merge-strings
   (lambda (strings . args)
     (let* ((merging-char (if (not (null? args))
-			    (car args)
-			    ""))
+			     (car args)
+			     ""))
 	   (tail (cdr strings))
 	   (last-element? (equal? (cdr tail) '()))
 	   (head (string-append (car strings)
@@ -363,7 +379,7 @@
 			    (+ splitter 1)
 			    (string-length string))))
       (cons head
-            (if (equal? (length indexes) 1)
+            (if (= (length indexes) 1)
                 (cons tail '())
                 (split-string-by-indexes tail
 					 (map (lambda (x)
@@ -438,7 +454,23 @@
 	 (not (improper-list? x)))))
 
 
-(define transpose
+(define last-of-list
+  (lambda (lst)
+    (car (list-tail lst (sub1 (length lst))))))
+
+
+(define make-list
+  (lambda (n . args)
+    (let ((fill (if (null? args)
+		    0
+		    (car args))))
+      (if (= n 0)
+	  '()
+	  (cons fill (make-list (sub1 n)
+				fill))))))
+
+
+(define list-transpose
   (lambda (structured-list)
     (apply map list structured-list)))
 
@@ -493,14 +525,14 @@
     (let ((n (length lst)))
       (define aux
         (lambda (acc current-n)
-          (if (equal? current-n
+          (if (= current-n
                       (sub1 n))
               acc
               (aux (func acc
                          (list-ref lst (add1 current-n)))
                    (add1 current-n)))))
-      (cond ((equal? n 0) '())
-            ((equal? n 1) lst)
+      (cond ((= n 0) '())
+            ((= n 1) lst)
             (else (aux (func (car lst)
                              (cadr lst))
                        1))))))
@@ -524,11 +556,26 @@
     (quick-sort unsorted)))
 
 
+(define min
+  (lambda (lst)
+    (car (sort lst))))
+
+
+(define max
+  (lambda (lst)
+    (car (reverse (sort lst)))))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VECTORS AND ARRAYS
 ;;           (REUSABLE)
 ;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define tmat '#(#(1 2 3) #(4 5 6) #(7 8 9)))
+(define tmat2 '#(#(1 2 3) #(4 5 6)))
+(define tvec '#(2 2 2))
+
 
 (define vector-append
   (lambda (vect ext)
@@ -561,57 +608,55 @@
         data)))
 
 
-(define shape
+(define array-shape
   (lambda (data)
     (if (not (vector? data))
         '()
         (append (list (vector-length data))
-                (shape (vector-ref data 0))))))
+                (array-shape (vector-ref data 0))))))
 
 
 (define dimension
   (lambda (data)
-    (length (shape data))))
+    (length (array-shape data))))
 
 
 (define matrix?
   (lambda (data)
     (and (vector? data)
-	 (equal? (dimension data)
-		 2))))
+	 (= (dimension data) 2))))
 
 
-(define n-rows
+;; More efficient than (car (array-shape data))
+(define matrix-n-rows
   (lambda (data)
     (when (matrix? data)
-      (car (shape data)))))
+      (vector-length data))))
 
 
-(define n-columns
+;; More efficient than (cadr (array-shape data))
+(define matrix-n-columns
   (lambda (data)
     (when (matrix? data)
-      (cadr (shape data)))))
+      (vector-length (vector-ref data 0)))))
 
 
 (define 1D?
   (lambda (data)
-    (equal? (dimension data)
-	    1)))
+    (= (dimension data) 1)))
 
 
 (define 2D?
   (lambda (data)
-    (equal? (dimension data)
-	    2)))
+    (= (dimension data) 2)))
 
 
 (define 3D?
   (lambda (data)
-    (equal? (dimension data)
-	    3)))
+    (= (dimension data) 3)))
 
 
-(define vector-scalar-product
+(define vector-inner-product
   (lambda (vec1 vec2)
     (define aux
       (lambda (acc n)
@@ -625,20 +670,230 @@
 	 1)))
 
 
-(define scalar-mult
+(define matrix-vector-product
+  (lambda (mat vec)
+    (let ((max-i
+	   (sub1 (vector-length mat))))
+      (let loop ((i 0))
+	(when (<= i max-i)
+	  (vector-append (vector (vector-inner-product (vector-ref mat i)
+						       vec))
+			 (if (< i max-i)
+			     (loop (add1 i))
+			     '#())))))))
+
+
+(define matrix-augment
+  (lambda (mat1 mat2)
+    (when (and (matrix? mat1)
+	       (vector? mat2))
+      (let* ((ref-length (matrix-n-rows mat1))
+	     (max-i (sub1 ref-length)))
+	(when (= ref-length
+		 (vector-length mat2))
+	  (let loop ((i 0))
+	    (when (<= i max-i)
+	      (vector-append
+	       (vector
+		(vector-append (vector-ref mat1 i)
+			       (vector-ref mat2 i)))
+	       (if (< i max-i)
+		   (loop (add1 i))
+		   '#())))))))))
+
+
+(define matrix-expand
+  (lambda (mat1 mat2)
+    (when (and (matrix? mat1)
+	       (vector? mat2)
+	       (= (car (array-shape mat1))
+		  (car (array-shape mat2))))
+      (vector-append mat1 mat2))))
+
+
+(define matrix-row
+  (lambda (mat n)
+    (vector-ref mat n)))
+
+
+(define matrix-column
+  (lambda (mat n)
+    (let ((max-i (sub1 (matrix-n-rows mat))))
+      (let loop ((i 0))
+	(when (<= i max-i)
+	  (vector-append (vector (array-ref mat i n))
+			 (if (< i max-i)
+			     (loop (add1 i))
+			     '#())))))))
+
+
+(define matrix-matrix-product
+  (lambda (mat1 mat2)
+    (let ((max-i
+	   (sub1 (matrix-n-rows mat1)))
+	  (max-j
+	   (sub1 (matrix-n-columns mat2))))
+      (let ext-loop ((i 0))
+	(when (<= i max-i)
+	  (vector-append
+	   (vector
+	    (let int-loop ((j 0))
+	      (when (<= j max-j)
+		(vector-append
+		 (vector
+		  (vector-inner-product (matrix-row mat1 i)
+					(matrix-column mat2 j)))
+		 (if (< j max-j)
+		     (int-loop (add1 j))
+		     '#())))))
+	   (if (< i max-i)
+	       (ext-loop (add1 i))
+	       '#())))))))
+
+
+;; Transpose a matrix (any array with dim=2)
+(define matrix-transpose
+  (lambda (mat)
+    (when (matrix? mat)
+      (let ((max-i
+	     (sub1 (matrix-n-columns mat)))
+	    (max-j
+	     (sub1 (matrix-n-rows mat))))
+	(let ext-loop ((i 0))
+	  (when (<= i max-i)
+	    (vector-append
+	     (vector
+	      (let int-loop ((j 0))
+		(when (<= j max-j)
+		  (vector-append (vector (array-ref mat j i))
+				 (if (< j max-j)
+				     (int-loop (add1 j))
+				     '#())))))
+	     (if (< i max-i)
+		 (ext-loop (add1 i))
+		 '#()))))))))
+
+
+(define make-array
+  (lambda (shape . args)
+    (let ((fill (if (null? args)
+		    0
+		    (car args)))
+	  (leading-dim (car shape)))
+      (if (= (length shape) 1)
+	  (make-vector leading-dim fill)
+	  (let ((max-i (sub1 leading-dim)))
+	    (let loop ((i 0))
+	      (when (<= i max-i)
+		(vector-append
+		 (vector
+		  (make-array (cdr shape) fill))
+		 (if (< i max-i)
+		     (loop (add1 i))
+		     '#())))))))))
+
+
+;(define array-gen-indexes
+;  (lambda (data)
+;    (let* ((array-shape (shape data))
+;	   (base-dim (length array-shape))
+;	   (n-combos (multiply array-shape)))
+;      (define aux
+;	(lambda (acc)
+;	  (
+
+
+(define array-map!
+  (lambda (f data)
+    (let ((max-i (sub1 (vector-length data))))
+	  (let loop ((i 0))
+	    (if (= (dimension data) 1)
+		(begin
+		  (vector-set! data
+			       i
+			       (f (vector-ref data i)))
+		  (when (< i max-i)
+		    (loop (add1 i))))
+		(begin
+		  (array-map! f (vector-ref data i))
+		  (when (< i max-i)
+		    (loop (add1 i)))))))))
+
+
+(define array-set!
+  (lambda (data indexes value)
+    (if (= (dimension data) 1)
+	(vector-set! data (car indexes) value)
+	(let ((vector-position (reverse (cdr (reverse indexes))))
+	      (vector-index (list-tail indexes
+				       (sub1 (length indexes)))))
+	  (vector-set! (apply array-ref
+			      (append (list data)
+				      vector-position))
+		       (car vector-index)
+		       value)))))
+
+
+(define vector-copy
+  (lambda (vec . args)
+    (let* ((lngt (vector-length vec))
+	   (start (if (not (null? args))
+		      (car args)
+		      0))
+	   (end (if (> (length args) 1)
+		    (cadr args)
+		    lngt))
+	   (new-vec (make-vector (- end start) 0))
+	   (max-i (sub1 end)))
+      (let loop ((i start))
+	(begin
+	  (vector-set! new-vec i (vector-ref vec i))
+	  (if (< i max-i)
+	      (loop (add1 i))))
+	new-vec))))
+
+
+(define array-copy
+  (lambda (data)
+    (if (= (dimension data) 1)
+	(vector-copy data)
+	(let ((max-i (sub1 (vector-length data))))
+	  (let loop ((i 0))
+	    (vector-append
+	     (vector
+	      (array-copy (vector-ref data i)))
+	     (if (< i max-i)
+		 (loop (add1 i))
+		 '#())))))))
+
+
+(define array-scalar-product
   (lambda (num data)
-    '()))
+    (let ((new-array (array-copy data)))
+      (array-map! (lambda (x) (* num x))
+		  new-array)
+      new-array)))
 
 
 (define dot
   (lambda (data1 data2)
     (cond ((number? data1)
-	   (scalar-mult data1 data2))
+	   (array-scalar-product data1 data2))
 	  ((and (1D? data1)
 	       (1D? data2)
-	       (equal? (vector-length data1)
-		       (vector-length data2)))
-	   (vector-scalar-product data1 data2)))))
+	       (= (vector-length data1)
+		  (vector-length data2)))
+	   (vector-inner-product data1 data2))
+	  ((and (> (dimension data1) 1)
+		(1D? data2))
+	   (matrix-vector-product data1 data2))
+	  ((and (matrix? data1)
+		(matrix? data2)
+		(= (matrix-n-rows data1)
+		   (matrix-n-columns data2))
+		(= (matrix-n-rows data2)
+		   (matrix-n-columns data1)))
+	   (matrix-matrix-product data1 data2)))))
 
 
 
