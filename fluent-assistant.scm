@@ -29,10 +29,6 @@
 ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-(require "portable-core.scm")
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL VARIABLE DEFINITIONS
 ;;             (FLUENT SPECIFIC)
@@ -132,8 +128,9 @@
 
 (define reload-fluent-scheme
   (lambda ()
-    (ti-menu-load-string "file read-macros fluent.scm")))
-
+    (begin
+      (ti-menu-load-string "file read-macros fluent-assistant.scm")
+      (ti-menu-load-string "file read-macros portable-core.scm"))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -291,3 +288,6 @@
        (import-profile-from-raw-text "profile.raw")
        (load-profiles "profiles.scm")
        )))
+
+
+(ti-menu-load-string "file read-macros portable-core.scm")

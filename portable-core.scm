@@ -551,7 +551,10 @@
                   (quick-sort tail))))))
 
 
-(define sort
+;; This is not simply called "sort" since it would happen to be a redefinition
+;; in MIT Scheme / Fluent Scheme, where other than a sequence also a procedure
+;; is expected as the second input
+(define my-sort
   (lambda (unsorted)
     (quick-sort unsorted)))
 
