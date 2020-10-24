@@ -611,17 +611,17 @@
         data)))
 
 
-(define array-shape
+(define array-size
   (lambda (data)
     (if (not (vector? data))
         '()
         (append (list (vector-length data))
-                (array-shape (vector-ref data 0))))))
+                (array-size (vector-ref data 0))))))
 
 
 (define dimension
   (lambda (data)
-    (length (array-shape data))))
+    (length (array-size data))))
 
 
 (define matrix?
@@ -630,14 +630,14 @@
 	 (= (dimension data) 2))))
 
 
-;; More efficient than (car (array-shape data))
+;; More efficient than (car (array-size data))
 (define matrix-n-rows
   (lambda (data)
     (when (matrix? data)
       (vector-length data))))
 
 
-;; More efficient than (cadr (array-shape data))
+;; More efficient than (cadr (array-size data))
 (define matrix-n-columns
   (lambda (data)
     (when (matrix? data)
@@ -709,8 +709,8 @@
   (lambda (mat1 mat2)
     (when (and (matrix? mat1)
 	       (vector? mat2)
-	       (= (car (array-shape mat1))
-		  (car (array-shape mat2))))
+	       (= (car (array-size mat1))
+		  (car (array-size mat2))))
       (vector-append mat1 mat2))))
 
 
@@ -778,19 +778,19 @@
 
 
 (define make-array
-  (lambda (shape . args)
+  (lambda (size . args)
     (let ((fill (if (null? args)
 		    0
 		    (car args)))
-	  (leading-dim (car shape)))
-      (if (= (length shape) 1)
+	  (leading-dim (car size)))
+      (if (= (length size) 1)
 	  (make-vector leading-dim fill)
 	  (let ((max-i (sub1 leading-dim)))
 	    (let loop ((i 0))
 	      (when (<= i max-i)
 		(vector-append
 		 (vector
-		  (make-array (cdr shape) fill))
+		  (make-array (cdr size) fill))
 		 (if (< i max-i)
 		     (loop (add1 i))
 		     '#())))))))))
@@ -798,9 +798,9 @@
 
 ;(define array-gen-indexes
 ;  (lambda (data)
-;    (let* ((array-shape (shape data))
-;	   (base-dim (length array-shape))
-;	   (n-combos (multiply array-shape)))
+;    (let* ((array-size (size data))
+;	   (base-dim (length array-size))
+;	   (n-combos (multiply array-size)))
 ;      (define aux
 ;	(lambda (acc)
 ;	  (
